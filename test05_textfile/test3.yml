@@ -1,0 +1,18 @@
+# test05_textfile/test3.yml
+- name: ansible 파일 조작 실습
+  hosts: all
+  become: yes
+
+  vars:
+    target_file: /tmp/sample_app.conf
+  
+  tasks:
+    - name: lineinfile 특정 문자열 바로 밑에 새로운 줄 추가 
+      lineinfile:
+        # 이 경로의 텍스트파일의 내용에서 
+        path: "{{ target_file }}"
+        # 이 정규표현식을 만족하는 line 이 있으면 해당 라인 뒤에(after)
+        insertafter: '^listen_port'
+        # 이 line 을 추가하라 
+        line: 'timeout = 60'
+        state: present

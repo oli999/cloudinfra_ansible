@@ -1,0 +1,18 @@
+# test05_textfile/test2.yml
+- name: ansible 파일 조작 실습
+  hosts: all
+  become: yes
+
+  vars:
+    target_file: /tmp/sample_app.conf
+  
+  tasks:
+    - name: 기존 설정값 변경 (정규 표현식 매칭)
+      lineinfile:
+        # 해당경로에 있는 파일에서 
+        path: "{{ target_file }}"
+        # 아래의 정규표현식에 매칭되는 line 을 찾아서
+        regexp: '^debug_mode\s*='
+        # 이 내용으로 교체 하겠다 
+        line: "debug_mode = true"
+        state: present

@@ -1,0 +1,19 @@
+# test05_textfile/test.yml
+- name: ansible 파일 조작 실습
+  hosts: all
+  become: yes
+
+  vars:
+    target_file: /tmp/sample_app.conf
+  
+  tasks:
+    - name: 실습용 텍스트 생성 및 전송
+      copy:
+        dest: "{{ target_file }}"
+        content: |
+          # MyApp 설정파일
+          app_name = MySuperApp
+          listen_port = 8080
+          debug_mode = false
+          max_connections = 100
+        mode: "0644"

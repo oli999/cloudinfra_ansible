@@ -1,0 +1,18 @@
+# test05_textfile/test4.yml
+- name: ansible 파일 조작 실습
+  hosts: all
+  become: yes
+
+  vars:
+    target_file: /tmp/sample_app.conf
+  
+  tasks:
+    - name: blockinfile 파일의 맨 아래쪽에 여러줄의 설정 블럭추가
+      blockinfile:
+        path: "{{ target_file }}"
+        # 옵션 custom marker 를 출력하고 싶으면 ...
+        marker: "# {mark} Ansible DB setting"
+        block: |
+          db_host = 172.16.8.100
+          db_user = scott
+          db_pass = tiger
