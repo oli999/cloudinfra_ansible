@@ -1,0 +1,6 @@
+# test03_playbook/variables/my_var.yml
+
+# 변수를 외부 파일로 작성하고 불러와서 활용할수 있다.
+server_role: "Web-Server"
+admin_email: "admin@naver.com"
+app_version: "v1.0.0"

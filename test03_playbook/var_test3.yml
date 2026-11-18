@@ -1,0 +1,28 @@
+# var_test3.yml
+
+- name: 외부 변수 활용연습
+  hosts: ubuntu
+  become: yes
+
+  vars_files:
+    - ./variables/my_list.yml
+  
+  tasks:
+    - name: 여러개의 페키지를 한번에 설치
+      package:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ target_packages }}"
+    - name: dict 형태의 변수를 참조해서 활용하기
+      debug:
+        msg: |
+          번호 : {{ info.num }}
+          이름 : {{ info.name }}
+          주소 : {{ info.addr }}
+    - name: list 안에 dict 가 들어 있는 형태의 데이터 활용하기
+      debug:
+        msg: |
+          번호 : {{ item.num }}
+          이름 : {{ item.name }}
+          주소 : {{ item.addr }}
+      loop: "{{ members }}"

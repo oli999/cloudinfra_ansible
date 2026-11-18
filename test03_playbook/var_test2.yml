@@ -1,0 +1,15 @@
+# var_test2.yml
+
+- name: 외부 변수 파일 로딩 실습
+  hosts: all
+  # 외부 변수 파일들의 목록을 여기에 작성한다 
+  vars_files:
+    - ./variables/my_var.yml
+  
+  tasks:
+    - name: debug 로 출력
+      debug:
+        msg: |
+          서버 역활: {{ server_role }}
+          관리자 메일: {{ admin_email }}
+          앱 버전: {{ app_version }}
