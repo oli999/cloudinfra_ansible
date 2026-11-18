@@ -1,0 +1,27 @@
+# test03_playbook/install_git.yml
+
+- name: Git 설치 및 사용자 환경 설정
+  hosts: localhost
+  become: yes
+
+  tasks:
+    - name: 1. Git 페키지 설치
+      package:
+        name: git
+        state: present
+    
+    - name: 2. user.name 설정
+      git_config:
+        name: user.name
+        value: "kimgura"
+        scope: global
+      become: yes
+      become_user: user1
+    
+    - name: 3. user.email 설정
+      git_config:
+        name: user.email
+        value: "oli999@naver.com"
+        scope: global
+      become: yes
+      become_user: user1

@@ -1,0 +1,24 @@
+# test03_playbook/init_rocky.yml
+
+- name: epel-release 설치
+  hosts: rocky
+  become: yes
+  tasks:
+    - name: epel 설치
+      package:
+        name: epel-release
+        state: present
+      register: epel_result
+    - name: epel 디버깅
+      debug: 
+        var: epel_result
+    - name: 확인하기
+      debug:
+        msg: "epel_result 변수의 내용 : {{ epel_result }}"
+    - name: 확인하기2
+      debug:
+        msg: |
+          epel_result 변수의 내용 : {{ epel_result }}
+          변경여부 : {{ epel_result.changed }}
+          어쩌구...
+          저쩌구...

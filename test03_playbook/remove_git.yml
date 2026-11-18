@@ -1,0 +1,16 @@
+# test03_playbook/remove_git.yml
+
+- name: Git 제거하기
+  hosts: all
+  become: yes
+  tasks:
+    - name: 1. Git 삭제 및 미사용 의존성 제거하기
+      # 1. package 모듈을 이용해서 
+      package:
+        name: git # 2. git 을 
+        state: absent # 3. 없는 상태로 만들겠다(제거 하겠다)
+        autoremove: yes # 4. 미사용 의존성 자동 제거 
+    - name: 2. Git 설정 파일 제거하기
+      file: # 파일 모듈을 이용해서 
+        path: ~user1/.gitconfig # 해당경로의 파일을
+        state: absent # 없는 상태로 만들겠다
