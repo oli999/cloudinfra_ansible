@@ -1,0 +1,19 @@
+# test.yml
+
+- name: jinja2 템플린 파일 활용
+  hosts: all
+  become: yes
+  vars:
+    fortune_today: "동쪽으로 가면 귀인을 만나요"
+  tasks:
+    - name: template 모듈을 이용해서 파일 출력하기
+      template:
+        src: ./index.html
+        dest: ~user1/sample.html
+        mode: "0644"
+    - name: 생성된 파일의 내용 읽어오기
+      shell: "cat ~user1/sample.html"
+      register: sample_result
+    - name:
+      debug:
+        msg: "{{ sample_result.stdout }}"
