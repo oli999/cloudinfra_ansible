@@ -1,0 +1,30 @@
+# test03_playbook/var_test.yml 
+
+- name: 여러줄의 문자열을 변수에 담아 놓고 활용하는 예제
+  hosts: all
+  become: yes
+
+  # 변수를 선언하는 블럭
+  vars:
+    greet: |
+      #!/bin/bash
+      echo "안녕하세요 이 스크립트는 ansible 로 생성 되었습니다"
+      echo "실행 서버 : {{ inventory_hostname }}"
+      echo "접속 ip : {{ ansible_host }}"
+      echo "작업 일시 : {{ ansible_date_time.date }}"
+    config_block: |
+      [Service]
+      Restart=always
+      User=user1
+  tasks:
+    - name: 1. script 내용을 파일로 생성
+      copy:
+        content: "{{ greet }}"
+        dest: "~user1/welcome_script.sh"
+        mode: "0755" # 8진수 임을 나타내기 위해서 0으로 시작, 반드시 " " 로 감싸 주어야 한다.
+    - name: 2. 만들어진 script 를 실행하고 결과를 변수에 담기
+      shell: "~user1/welcome_script.sh"
+      register: script_result
+    - name: 3. 변수에 담긴 내용을 debug 콘솔로 출력하기
+      debug:
+        msg: "{{ script_result.stdout }}" # 해당 node 의 표준 출력 문자열을 확인할수 있다.
