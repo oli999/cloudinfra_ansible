@@ -40,5 +40,5 @@
   loop:
     - /etc/nginx
     - /var/log/nginx
-    - "{{ utuntu_web_root }}/index.html"
+    - "{{ ubuntu_web_root }}/index.html"
   when: ansible_distribution == 'Ubuntu'

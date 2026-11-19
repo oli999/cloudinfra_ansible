@@ -1,0 +1,6 @@
+# test08_role/teardown.yml
+
+- hosts: all
+  become: yes
+  roles:
+    - nginx_remove
