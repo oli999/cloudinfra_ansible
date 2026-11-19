@@ -1,0 +1,31 @@
+# nginx_ubuntu_remove.yml
+
+- name: ubuntu nginx 삭제
+  hosts: ubuntu
+  become: yes
+
+  tasks:
+    - name: 서비스 중지 및 비활성화
+      service:
+        name: nginx
+        state: stopped
+        enabled: no
+      ignore_errors: yes # 이미 삭제 되었거나 꺼져 있어도 에러없이 진행되도록
+
+    - name: nginx 페키지 삭제(의존성 포함해서 삭제)
+      apt:
+        name: nginx
+        state: absent
+        purge: yes # ubuntu 에서 설정 찌꺼기 완전 제거하기 위해
+        autoremove: yes 
+
+    - name: 설정파일, 로그, index.html 삭제
+      file:
+        path: "{{item}}"
+        state: absent
+      loop:
+        - /etc/nginx
+        - /var/log/nginx
+        - /var/www/html/index.html
+
+      

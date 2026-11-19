@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ ansible_distribution }} Web Server</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; text-align: center; margin-top: 100px; background-color: #f4f4f9; }
+        .card { display: inline-block; padding: 40px; background: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #333; }
+        .msg { font-size: 1.2em; color: #555; margin: 20px 0; font-weight: bold; }
+        .footer { font-size: 0.8em; color: #888; margin-top: 30px; }
+        .tag { padding: 5px 10px; border-radius: 5px; color: white; font-weight: bold; }
+        .rocky { background-color: #10b981; }
+        .ubuntu { background-color: #e95420; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Welcome to <span class="tag {{ ansible_distribution | lower }}">{{ ansible_distribution }}</span> Server!</h1>
+        <div class="footer">
+            Managed by Ansible | Kernel: {{ ansible_kernel }} | Host: {{ ansible_hostname }}
+        </div>
+    </div>
+</body>
+</html>

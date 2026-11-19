@@ -1,0 +1,27 @@
+# nginx_rocky_setup.yml
+
+- name: rocky linux 에 nginx 셋업
+  hosts: rocky
+  become: yes
+
+  tasks:
+    - name: nginx 설치
+      dnf:
+        name: nginx
+        state: present
+    - name: 서비스 시작
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+    - name: index.html 템플릿 배포
+      template:
+        src: index.html
+        dest: /usr/share/nginx/html/index.html
+        mode: "0644"
+    # 필요시에 방화벽 내리기
+    - name: 방화벽 해제
+      service:
+        name: firewalld
+        state: stopped
+        enabled: no
