@@ -1,0 +1,6 @@
+
+# test08_role/site.yml
+- hosts: all # 모든 host 에 
+  become: yes # root 로 변신을 해서 
+  roles:
+    - nginx_setup # nginx_setup role 을 실행해라 (roles 안에 있는 폴더명)
