@@ -1,0 +1,44 @@
+
+- name: 2. 서비스 중지 및 비활성화
+  service:
+    name: nginx
+    state: stopped
+    enabled: no
+  ignore_errors: yes
+
+# Rocky 전용 페키지 삭제(의존성 포함)
+- name: 3-1. Rocky 에서 nginx 삭제
+  dnf:
+    name: nginx
+    state: absent
+    autoremove: yes
+  when: ansible_distribution == 'Rocky' # 이 조건이 true 일때만 3-1 블럭이 실행된다.
+
+# Ubuntu 전용 페키지 삭제
+- name: 3-2. Ununtu 에서 nginx 삭제
+  apt:
+    name: nginx
+    state: absent
+    purge: yes
+    autoremove: yes
+  when: ansible_distribution == 'Ubuntu' # 이 조건이 true 일때만 3-2 블럭이 실행된다.
+
+- name: 4-1. Rocky 설정파일, 로그, index.html 삭제
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/nginx
+    - /var/log/nginx
+    - "{{ rocky_web_root }}/index.html"
+  when: ansible_distribution == 'Rocky'
+
+- name: 4-2. Ubuntu 설정파일, 로그, index.html 삭제
+  file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - /etc/nginx
+    - /var/log/nginx
+    - "{{ utuntu_web_root }}/index.html"
+  when: ansible_distribution == 'Ubuntu'

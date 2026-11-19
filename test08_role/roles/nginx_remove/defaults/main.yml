@@ -1,0 +1,9 @@
+# roles/nginx_setup/defaults/main.yml
+
+# 상황에 따라 value 를 변경해서 사용할수 있는 변수를 선언하고 값을 넣어준다.
+
+rocky_web_root: /usr/share/nginx/html
+rocky_fw_service: firewalld
+
+ubuntu_web_root: /var/www/html
+ubuntu_fw_service: ufw
