@@ -1,0 +1,4 @@
+# vars/Ununtu.yml
+
+web_root: /var/www/html
+fw_service: ufw

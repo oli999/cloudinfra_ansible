@@ -1,0 +1,35 @@
+# nginx_setup.yml
+
+- name: 모든 OS 에 nginx 설치
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: OS 별 변수 파일 불러오기
+      include_vars: "vars/{{ ansible_distribution }}.yml"
+    
+    - name: nginx 설치
+      # dnf, apt 를 사용하는것이 아닌 package 모듈을 이용하면 된다 
+      package:
+        name: nginx
+        state: present 
+    
+    - name: 서비스 시작
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: index.html 템플릿 배포
+      template: 
+        src: index.html
+        dest: "{{ web_root }}/index.html"
+        mode: "0644"
+    
+    - name: 방화벽 해제
+      service:
+        name: "{{ fw_service }}"
+        state: stopped
+        enabled: no
+
+
