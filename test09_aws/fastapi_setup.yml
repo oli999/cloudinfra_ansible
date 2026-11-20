@@ -43,6 +43,7 @@
       copy:
         dest: "/etc/systemd/system/fastapi_{{ item }}.service"
         content: |
+          [Unit]
           Description=FastAPI instance running on {{ item }}
           After=network.target
 
