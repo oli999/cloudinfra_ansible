@@ -1,0 +1,9 @@
+---
+galaxy_info:
+  author: KT Cloud Infra Instructor
+  description: postgre setup
+  company: 우리들의 주식회사
+  license: MIT
+  min_ansible_version: 2.16.3
+
+dependencies: []

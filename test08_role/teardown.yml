@@ -1,6 +1,13 @@
 # test08_role/teardown.yml
 
-- hosts: all
+- name: 모든 hosts 에서 nginx 제거
+  hosts: all
   become: yes
   roles:
     - nginx_remove
+
+- name: DB 서버에서 postgre 제거
+  hosts: 172.16.1.202
+  become: yes
+  roles:
+    - postgre_remove

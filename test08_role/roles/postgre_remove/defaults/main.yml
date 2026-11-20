@@ -1,0 +1,4 @@
+# defaults/main.yml
+
+# 삭제할 최상위 데이터 디렉토리 (여기를 날려야 initdb 찌꺼기가 사라집니다)
+pg_base_dir: "/var/lib/pgsql"

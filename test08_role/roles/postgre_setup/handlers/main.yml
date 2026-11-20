@@ -1,0 +1,6 @@
+# handlers/main.yml
+
+- name: restart_postgre # 여기에 작성한 이름이 이벤트명이 된다.
+  systemd:
+    name: postgresql
+    state: restarted

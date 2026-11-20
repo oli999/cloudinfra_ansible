@@ -1,6 +1,14 @@
 
 # test08_role/site.yml
-- hosts: all # 모든 host 에 
+- name: 모든 hosts 에 nginx 설치
+  hosts: all # 모든 host 에 
   become: yes # root 로 변신을 해서 
   roles:
     - nginx_setup # nginx_setup role 을 실행해라 (roles 안에 있는 폴더명)
+
+# DB 는 DB 전용 hosts 에만 설치 
+- name: DB 서버에 postgre 설치
+  hosts: 172.16.1.202
+  become: yes
+  roles:
+    - postgre_setup
