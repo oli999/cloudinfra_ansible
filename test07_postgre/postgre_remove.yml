@@ -1,7 +1,7 @@
 # test07_postgre/postgre_remove.yml
 ---
 - name: "PostgreSQL 완전 삭제 및 초기화 (Rocky Linux 전용)"
-  hosts: 172.16.1.202
+  hosts: localhost
   become: yes
 
   vars:
