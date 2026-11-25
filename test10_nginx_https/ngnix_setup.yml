@@ -8,7 +8,7 @@
     nginx_vhosts:
       # 아직 HTTPS가 없으므로 80포트로만 기본 세팅
       - listen: "80"
-        server_name: "도메인 목록 입력"
+        server_name: "cloud-hack.store www.cloud-hack.store"
         root: "/usr/share/nginx/html"
         index: "index.html index.htm"
   # 설치한 ansible galaxy role 을 이용해서 설치하도록 한다 
