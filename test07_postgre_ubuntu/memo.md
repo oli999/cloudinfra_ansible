@@ -24,3 +24,11 @@ sudo su - postgres
 psql -U scott -d scott_db -h localhost
 
 ```
+
+## DB 에 sample 데이터 적재하기
+
+```bash
+ansible-playbook scott_setup.yml
+```
+
+<img src="./images/image02.png">

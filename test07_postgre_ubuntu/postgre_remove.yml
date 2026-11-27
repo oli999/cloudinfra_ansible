@@ -1,0 +1,41 @@
+# postgre_remove.yml
+
+---
+- name: "PostgreSQL 완전 삭제 및 초기화 (Ubuntu 전용)"
+  hosts: aws_ubuntu
+  become: yes
+
+  tasks:
+    - name: "1. PostgreSQL 서비스 중지"
+      systemd:
+        name: postgresql
+        state: stopped
+      # 서비스가 이미 없거나 꺼져 있어도 에러를 내지 않고 무시하기
+      ignore_errors: yes
+
+    - name: "2. 패키지 완전 삭제 (설정 파일 포함 - Purge)"
+      apt:
+        name:
+          - postgresql
+          - postgresql-contrib
+          - postgresql-client-common
+          - postgresql-common
+          - python3-psycopg2
+        state: absent
+        purge: yes        # 일반 삭제가 아닌 설정 파일까지 지우는 완전 삭제 옵션
+        autoremove: yes   # 더 이상 사용하지 않는 의존성 패키지(찌꺼기)도 함께 정리
+
+    - name: "3. 잔여 설정, 로그, 실제 데이터(DB) 디렉토리 강제 삭제"
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/postgresql/      # 잔여 설정 파일 경로
+        - /var/lib/postgresql/  # 실제 데이터베이스(scott_db 등)가 저장된 경로
+        - /var/log/postgresql/  # 로그 파일 경로
+
+    - name: "4. postgres OS 계정 및 홈 디렉토리 삭제"
+      user:
+        name: postgres
+        state: absent
+        remove: yes      
