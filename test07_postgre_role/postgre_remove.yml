@@ -1,0 +1,57 @@
+# postgre_remove.yml
+
+# 삭제는 Rocky, Amazon, ubuntu 겸용으로 사용할수 있도록 구성
+
+---
+- name: "PostgreSQL 완전 삭제 및 공장 초기화 (Teardown)"
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: "1. PostgreSQL 서비스 중지"
+      systemd:
+        name: postgresql
+        state: stopped
+      # 이미 삭제되었거나 서비스가 없어도 쿨하게 무시하고 다음으로 넘어갑니다.
+      ignore_errors: yes
+
+    - name: "2-A. 패키지 완전 삭제 (RedHat 계열 - Rocky, Amazon)"
+      dnf:
+        name:
+          - postgresql-server
+          - postgresql-contrib
+          - postgresql
+          - python3-psycopg2
+        state: absent
+        autoremove: yes
+      when: ansible_os_family == "RedHat" # 뿌리가 RedHat일 때만 실행
+
+    - name: "2-B. 패키지 완전 삭제 (Debian 계열 - Ubuntu)"
+      apt:
+        name:
+          - postgresql
+          - postgresql-contrib
+          - postgresql-client-common
+          - postgresql-common
+          - python3-psycopg2
+        state: absent
+        purge: yes       # Ubuntu 설정 파일까지 날리는 옵션
+        autoremove: yes
+      when: ansible_os_family == "Debian" # 뿌리가 Debian일 때만 실행
+
+    - name: "3. 잔여 데이터, 설정, 로그 폴더 강제 삭제 (찌꺼기 제거)"
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /var/lib/pgsql/         # RedHat 데이터 폴더 (PG_VERSION 포함)
+        - /var/lib/postgresql/    # Debian 데이터 폴더
+        - /etc/postgresql/        # Debian 설정 폴더
+        - /var/log/postgresql/    # Debian 로그 폴더
+      # 각 OS에 없는 폴더를 지우라고 해도 에러 없이 스킵되므로 안전
+
+    - name: "4. OS의 'postgres' 시스템 계정 삭제"
+      user:
+        name: postgres
+        state: absent
+        remove: yes # 홈 디렉토리까지 말끔히 지우기
